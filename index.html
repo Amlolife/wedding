@@ -1,54 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cloudinary Image Grid</title>
-    <style>
-        /* Simple grid layout for images */
-        .image-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 10px;
-            padding: 10px;
-        }
-        .image-grid img {
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cloudinary Image Grid</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <div class="grid-container" id="image-grid">
+    <!-- Images will be displayed here -->
+  </div>
 
-    <h1>Cloudinary Folder Grid View</h1>
-
-    <div id="image-grid" class="image-grid"></div>
-
-    <script>
-        // URL to Cloudinary API for listing resources in a folder
-        const cloudinaryUrl = 'https://api.cloudinary.com/v1_1/dbpd1u7tn/resources/image/list?prefix=my_folder&max_results=50';
-
-        // Fetch the list of images from the Cloudinary folder
-        fetch(cloudinaryUrl)
-            .then(response => response.json())
-            .then(data => {
-                const images = data.resources; // Array of image objects
-                const imageGrid = document.getElementById('image-grid');
-
-                // Loop through the images and create img elements for each
-                images.forEach(image => {
-                    const imgElement = document.createElement('img');
-                    imgElement.src = image.secure_url; // Secure URL of the image
-                    imgElement.alt = image.public_id;  // Use the public_id as alt text
-                    imageGrid.appendChild(imgElement);
-                });
-            })
-            .catch(error => {
-                console.error('Error fetching Cloudinary images:', error);
-            });
-    </script>
-
+  <script src="script.js"></script>
 </body>
 </html>
