@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloudinary Image Gallery</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f9f9f9;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+            padding: 10px;
+            max-width: 800px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .gallery img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+        .gallery img:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="gallery" id="gallery"></div>
+
+    <script>
+        const cloudName = "YOUR_CLOUD_NAME"; // Replace with your Cloudinary cloud name
+        const folderName = "YOUR_FOLDER_NAME"; // Replace with your Cloudinary folder name
+
+        async function fetchImages() {
+            const url = `https://res.cloudinary.com/${cloudName}/image/list/${folderName}.json`;
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error("Failed to fetch images");
+
+                const data = await response.json();
+                const gallery = document.getElementById("gallery");
+
+                data.resources.forEach((image) => {
+                    const img = document.createElement("img");
+                    img.src = `https://res.cloudinary.com/${cloudName}/image/upload/w_600/${image.public_id}.${image.format}`;
+                    img.alt = image.public_id;
+                    gallery.appendChild(img);
+                });
+            } catch (error) {
+                console.error("Error loading images:", error);
+            }
+        }
+
+        fetchImages();
+    </script>
+</body>
+</html>
